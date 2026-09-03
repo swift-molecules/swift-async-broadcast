@@ -5,10 +5,9 @@
     import Hash_Indexed_Primitive
     import Hash
     import Column
-    import Buffer_Linear_Primitive
-    import Storage
+    import Buffer_Linear
     import Memory_Heap
-    import Memory_Allocator_Primitive
+    import Memory_Allocator
     import Buffer
 
     extension Async.Broadcast {

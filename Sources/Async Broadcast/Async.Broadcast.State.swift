@@ -8,10 +8,9 @@
     import Deque
     import Column
     import Buffer_Ring_Primitive
-    import Buffer_Linear_Primitive
-    import Storage
+    import Buffer_Linear
     import Memory_Heap
-    import Memory_Allocator_Primitive
+    import Memory_Allocator
     import Buffer
 
     extension Async.Broadcast {
