@@ -8,7 +8,7 @@
     import Column
     import Buffer_Ring_Primitive
     import Buffer_Linear
-    import Memory_Heap
+    import Memory
     import Memory_Allocator
     import Buffer
 
