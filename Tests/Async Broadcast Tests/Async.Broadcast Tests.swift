@@ -1,14 +1,15 @@
+import Async_Broadcast
 #if canImport(Async_Broadcast)
 
     import Async
     import Testing
 
     @Suite
-    struct BroadcastTests {
+    struct `Async broadcasts deliver values to their subscribers` {
 
         @Test
         func `Single subscriber receives all elements`() async throws {
-            let broadcast = Async.Broadcast<Int>()
+            let broadcast = Async.`Async broadcasts deliver repeated buffered values`<Int>()
             let subscription = broadcast.subscribe()
 
             broadcast.send(1)
@@ -26,7 +27,7 @@
 
         @Test
         func `Multiple subscribers each receive all elements`() async throws {
-            let broadcast = Async.Broadcast<Int>()
+            let broadcast = Async.`Async broadcasts deliver repeated buffered values`<Int>()
             let sub1 = broadcast.subscribe()
             let sub2 = broadcast.subscribe()
 
@@ -59,7 +60,7 @@
 
         @Test
         func `Late subscriber only sees new elements`() async throws {
-            let broadcast = Async.Broadcast<Int>()
+            let broadcast = Async.`Async broadcasts deliver repeated buffered values`<Int>()
 
             broadcast.send(1)
 
@@ -78,8 +79,8 @@
         }
 
         @Test
-        func `isFinished reflects state`() {
-            let broadcast = Async.Broadcast<Int>()
+        func `The finished query reflects broadcast state`() {
+            let broadcast = Async.`Async broadcasts deliver repeated buffered values`<Int>()
             #expect(broadcast.isFinished == false)
             broadcast.finish()
             #expect(broadcast.isFinished == true)
@@ -87,7 +88,7 @@
 
         @Test
         func `Subscriber suspends until element available`() async throws {
-            let broadcast = Async.Broadcast<Int>()
+            let broadcast = Async.`Async broadcasts deliver repeated buffered values`<Int>()
             let subscription = broadcast.subscribe()
             let started = Async.Barrier(parties: 2)
 
@@ -107,7 +108,7 @@
 
         @Test
         func `Subscriber resumes with nil on finish`() async throws {
-            let broadcast = Async.Broadcast<Int>()
+            let broadcast = Async.`Async broadcasts deliver repeated buffered values`<Int>()
             let subscription = broadcast.subscribe()
             let started = Async.Barrier(parties: 2)
 
@@ -127,7 +128,7 @@
 
         @Test
         func `Cancel subscription stops iteration`() async throws {
-            let broadcast = Async.Broadcast<Int>()
+            let broadcast = Async.`Async broadcasts deliver repeated buffered values`<Int>()
             let subscription = broadcast.subscribe()
             let started = Async.Barrier(parties: 2)
 
@@ -148,7 +149,7 @@
         @Test
         func `Elements delivered in order`() async throws {
 
-            let broadcast = Async.Broadcast<Int>(bufferCapacity: 100)
+            let broadcast = Async.`Async broadcasts deliver repeated buffered values`<Int>(bufferCapacity: 100)
             let subscription = broadcast.subscribe()
 
             (1...100).forEach { i in
@@ -166,7 +167,7 @@
 
         @Test
         func `Send after finish is ignored`() async throws {
-            let broadcast = Async.Broadcast<Int>()
+            let broadcast = Async.`Async broadcasts deliver repeated buffered values`<Int>()
             let subscription = broadcast.subscribe()
 
             broadcast.send(1)
@@ -183,7 +184,7 @@
 
         @Test
         func `Task cancellation throws cancelled error`() async {
-            let broadcast = Async.Broadcast<Int>()
+            let broadcast = Async.`Async broadcasts deliver repeated buffered values`<Int>()
             let subscription = broadcast.subscribe()
             let started = Async.Barrier(parties: 2)
 
@@ -200,7 +201,7 @@
             do {
                 _ = try await receiveTask.value
                 Issue.record("Expected cancellation error")
-            } catch let error as Async.Broadcast<Int>.Error {
+            } catch let error as Async.`Async broadcasts deliver repeated buffered values`<Int>.Error {
                 #expect(error == .cancelled)
             } catch {
                 Issue.record("Unexpected error type: \(error)")
@@ -209,7 +210,7 @@
     }
 
     @Suite
-    struct BroadcastStressTests {
+    struct `Async broadcasts preserve delivery under concurrent load` {
 
         private func yieldProgress(iterations: Int = 50) async {
             for _ in 0..<iterations {
@@ -223,7 +224,7 @@
             for round in 0..<20 {
                 let elementCount = 50
 
-                let broadcast = Async.Broadcast<Int>(bufferCapacity: elementCount)
+                let broadcast = Async.`Async broadcasts deliver repeated buffered values`<Int>(bufferCapacity: elementCount)
                 let subscriberCount = 5
 
                 let subscriptions = (0..<subscriberCount).map { _ in
@@ -267,7 +268,7 @@
 
             for round in 0..<30 {
                 let elementCount = 20
-                let broadcast = Async.Broadcast<Int>(bufferCapacity: elementCount)
+                let broadcast = Async.`Async broadcasts deliver repeated buffered values`<Int>(bufferCapacity: elementCount)
                 let subscriberCount = 10
 
                 let subscriptions = (0..<subscriberCount).map { _ in
@@ -284,7 +285,7 @@
                                     break
                                 }
                                 received.append(value)
-                            } catch let error as Async.Broadcast<Int>.Error {
+                            } catch let error as Async.`Async broadcasts deliver repeated buffered values`<Int>.Error {
                                 #expect(
                                     error == .cancelled,
                                     "Round \(round), subscriber \(index): Expected .cancelled, got \(error)"
@@ -343,7 +344,7 @@
         func `Finish racing with pending subscribers - all resume with nil`() async throws {
 
             for round in 0..<30 {
-                let broadcast = Async.Broadcast<Int>()
+                let broadcast = Async.`Async broadcasts deliver repeated buffered values`<Int>()
                 let subscriberCount = 15
                 let preBufferedCount = 5
 
@@ -385,7 +386,7 @@
 
             let subscriberCount = 20
             let elementCount = 500
-            let broadcast = Async.Broadcast<Int>(bufferCapacity: elementCount)
+            let broadcast = Async.`Async broadcasts deliver repeated buffered values`<Int>(bufferCapacity: elementCount)
 
             let results = Async.Channel<(id: Int, elements: [Int], terminatedViaCancellation: Bool)>
                 .Unbounded().take().ends()
@@ -411,7 +412,7 @@
                             }
                             received.append(value)
                             await Task.yield()
-                        } catch let error as Async.Broadcast<Int>.Error {
+                        } catch let error as Async.`Async broadcasts deliver repeated buffered values`<Int>.Error {
 
                             #expect(
                                 error == .cancelled,
@@ -536,7 +537,7 @@
         func `Buffer trimming with slow subscriber`() async throws {
 
             let bufferCapacity = 20
-            let broadcast = Async.Broadcast<Int>(bufferCapacity: bufferCapacity)
+            let broadcast = Async.`Async broadcasts deliver repeated buffered values`<Int>(bufferCapacity: bufferCapacity)
             let elementCount = 100
 
             let fastSub = broadcast.subscribe()
@@ -602,7 +603,7 @@
         @Test
         func `Sequential next usage is correct`() async throws {
 
-            let broadcast = Async.Broadcast<Int>()
+            let broadcast = Async.`Async broadcasts deliver repeated buffered values`<Int>()
             let subscription = broadcast.subscribe()
 
             (0..<10).forEach { i in
@@ -619,16 +620,15 @@
         }
     }
 
-    @Suite("Broadcast")
-    struct Tests {
+    @Suite("`Async broadcasts deliver repeated buffered values`")
+    struct `Async broadcasts preserve subscription behavior` {
         @Test
-        func
-            `send trims the replay buffer to bufferLimit behind a stalled subscriber, which observes loss`()
+        func `Send trims the replay buffer to bufferLimit behind a stalled subscriber, which observes loss`()
             async throws
         {
 
             let bufferLimit = 4
-            let broadcast = Async.Broadcast<Int>(bufferCapacity: bufferLimit)
+            let broadcast = Async.`Async broadcasts deliver repeated buffered values`<Int>(bufferCapacity: bufferLimit)
 
             let stalled = broadcast.subscribe()
 
@@ -647,13 +647,12 @@
         }
 
         @Test
-        func
-            `Loss fires with a positive dropped count when a lagging subscriber's cursor is advanced past drops`()
+        func `Loss fires with a positive dropped count when a lagging subscriber's cursor is advanced past drops`()
             async throws
         {
             let bufferLimit = 4
             let recorder = LossRecorder()
-            let broadcast = Async.Broadcast<Int>(bufferCapacity: bufferLimit) { loss in
+            let broadcast = Async.`Async broadcasts deliver repeated buffered values`<Int>(bufferCapacity: bufferLimit) { loss in
                 recorder.record(loss)
             }
 
@@ -694,7 +693,7 @@
         func `Loss does not fire when no subscriber lags`() async throws {
             let recorder = LossRecorder()
 
-            let broadcast = Async.Broadcast<Int>(bufferCapacity: 100) { loss in
+            let broadcast = Async.`Async broadcasts deliver repeated buffered values`<Int>(bufferCapacity: 100) { loss in
                 recorder.record(loss)
             }
             let subscription = broadcast.subscribe()
@@ -717,13 +716,12 @@
         }
 
         @Test
-        func
-            `Loss does not fire for a subscriber that joins late, since replay from the current window is not loss`()
+        func `Loss does not fire for a subscriber that joins late, since replay from the current window is not loss`()
             async throws
         {
             let bufferLimit = 4
             let recorder = LossRecorder()
-            let broadcast = Async.Broadcast<Int>(bufferCapacity: bufferLimit) { loss in
+            let broadcast = Async.`Async broadcasts deliver repeated buffered values`<Int>(bufferCapacity: bufferLimit) { loss in
                 recorder.record(loss)
             }
 
@@ -756,7 +754,7 @@
         func `Loss accounts for multiple lagging subscribers individually`() async throws {
             let bufferLimit = 4
             let recorder = LossRecorder()
-            let broadcast = Async.Broadcast<Int>(bufferCapacity: bufferLimit) { loss in
+            let broadcast = Async.`Async broadcasts deliver repeated buffered values`<Int>(bufferCapacity: bufferLimit) { loss in
                 recorder.record(loss)
             }
 
@@ -796,12 +794,12 @@
 
         @Test
         func
-            `Broadcast without an onLoss handler behaves exactly as before, and Loss.Reason equality holds`()
+            ``Async broadcasts deliver repeated buffered values` without an onLoss handler behaves exactly as before, and Loss.Reason equality holds`()
             async throws
         {
 
             let bufferLimit = 4
-            let broadcast = Async.Broadcast<Int>(bufferCapacity: bufferLimit)
+            let broadcast = Async.`Async broadcasts deliver repeated buffered values`<Int>(bufferCapacity: bufferLimit)
             let stalled = broadcast.subscribe()
 
             let elementCount = 20
@@ -815,14 +813,14 @@
 
             #expect(received == Array((elementCount - bufferLimit)..<elementCount))
 
-            #expect(Async.Broadcast<Int>.Loss.Reason.capacityLimit == .capacityLimit)
+            #expect(Async.`Async broadcasts deliver repeated buffered values`<Int>.Loss.Reason.capacityLimit == .capacityLimit)
         }
     }
 
     private final class LossRecorder: @unchecked Sendable {
-        private(set) var events: [Async.Broadcast<Int>.Loss] = []
+        private(set) var events: [Async.`Async broadcasts deliver repeated buffered values`<Int>.Loss] = []
 
-        func record(_ event: Async.Broadcast<Int>.Loss) {
+        func record(_ event: Async.`Async broadcasts deliver repeated buffered values`<Int>.Loss) {
             events.append(event)
         }
     }

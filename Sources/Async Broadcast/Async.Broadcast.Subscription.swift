@@ -5,7 +5,8 @@
     import Hash_Indexed_Primitive
     import Hash
     import Column
-    import Buffer_Linear
+    import Buffer_Linear_Primitive
+    import Storage_Memory
     import Memory
     import Memory_Allocator
     import Buffer

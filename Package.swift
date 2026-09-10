@@ -12,53 +12,56 @@ let package = Package(
         .visionOS(.v27),
     ],
     products: [
-        .library(
-            name: "Async Broadcast",
-            targets: ["Async Broadcast"]
-        )
+        .library(name: "Async Broadcast", targets: ["Async Broadcast"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/swift-molecules/swift-async", branch: "main"),
-        .package(url: "https://github.com/swift-atoms/swift-buffer", branch: "main"),
-        .package(url: "https://github.com/swift-molecules/swift-buffer-linear", branch: "main"),
-        .package(url: "https://github.com/swift-molecules/swift-buffer-ring", branch: "main"),
-        .package(url: "https://github.com/swift-molecules/swift-column", branch: "main"),
-        .package(url: "https://github.com/swift-molecules/swift-deque", branch: "main"),
-        .package(url: "https://github.com/swift-molecules/swift-dictionary", branch: "main"),
-        .package(url: "https://github.com/swift-molecules/swift-dictionary-ordered", branch: "main"),
-        .package(url: "https://github.com/swift-atoms/swift-hash", branch: "main"),
-        .package(url: "https://github.com/swift-molecules/swift-hash-table", branch: "main"),
-        .package(url: "https://github.com/swift-atoms/swift-index", branch: "main"),
-        .package(url: "https://github.com/swift-molecules/swift-memory-allocation", branch: "main"),
-        .package(url: "https://github.com/swift-atoms/swift-memory", branch: "main"),
-        .package(url: "https://github.com/swift-molecules/swift-queue", branch: "main"),
+        .package(url: "https://github.com/swift-atoms/swift-async.git", branch: "main"),
+        .package(url: "https://github.com/swift-atoms/swift-buffer.git", branch: "main"),
+        .package(url: "https://github.com/swift-molecules/swift-buffer-linear.git", branch: "main"),
+        .package(url: "https://github.com/swift-molecules/swift-buffer-ring.git", branch: "main"),
+        .package(url: "https://github.com/swift-molecules/swift-column.git", branch: "main"),
+        .package(url: "https://github.com/swift-atoms/swift-deque.git", branch: "main"),
+        .package(url: "https://github.com/swift-molecules/swift-dictionary.git", branch: "main"),
+        .package(url: "https://github.com/swift-molecules/swift-dictionary-ordered.git", branch: "main"),
+        .package(url: "https://github.com/swift-atoms/swift-hash.git", branch: "main"),
+        .package(url: "https://github.com/swift-molecules/swift-hash-table.git", branch: "main"),
+        .package(url: "https://github.com/swift-atoms/swift-index.git", branch: "main"),
+        .package(url: "https://github.com/swift-atoms/swift-memory.git", branch: "main"),
+        .package(url: "https://github.com/swift-molecules/swift-memory-allocation.git", branch: "main"),
+        .package(url: "https://github.com/swift-atoms/swift-queue.git", branch: "main"),
+        .package(url: "https://github.com/swift-molecules/swift-storage-memory.git", branch: "main"),
     ],
     targets: [
         .target(
             name: "Async Broadcast",
             dependencies: [
-                .product(name: "Async", package: "swift-async"),
+                .product(name: "Async Mutex", package: "swift-async"),
+                .product(name: "Async Primitive", package: "swift-async"),
+                .product(name: "Async Publication", package: "swift-async"),
                 .product(name: "Buffer", package: "swift-buffer"),
-                .product(name: "Buffer Linear", package: "swift-buffer-linear"),
-                .product(name: "Buffer Ring", package: "swift-buffer-ring"),
+                .product(name: "Buffer Linear Primitive", package: "swift-buffer-linear"),
+                .product(name: "Buffer Ring Primitive", package: "swift-buffer-ring"),
                 .product(name: "Column", package: "swift-column"),
                 .product(name: "Deque", package: "swift-deque"),
                 .product(name: "Dictionary", package: "swift-dictionary"),
                 .product(name: "Dictionary Ordered", package: "swift-dictionary-ordered"),
                 .product(name: "Hash", package: "swift-hash"),
-                .product(name: "Hash Indexed", package: "swift-hash-table"),
+                .product(name: "Hash Indexed Primitive", package: "swift-hash-table"),
                 .product(name: "Index", package: "swift-index"),
-                .product(name: "Memory Allocator", package: "swift-memory-allocation"),
                 .product(name: "Memory", package: "swift-memory"),
+                .product(name: "Memory Allocator", package: "swift-memory-allocation"),
                 .product(name: "Queue", package: "swift-queue"),
-            ]
+                .product(name: "Storage Memory", package: "swift-storage-memory"),
+            ],
+            path: "Sources/Async Broadcast"
         ),
         .testTarget(
             name: "Async Broadcast Tests",
             dependencies: [
-                "Async Broadcast",
                 .product(name: "Async", package: "swift-async"),
-            ]
+                .target(name: "Async Broadcast"),
+            ],
+            path: "Tests/Async Broadcast Tests"
         ),
     ],
     swiftLanguageModes: [.v6]
