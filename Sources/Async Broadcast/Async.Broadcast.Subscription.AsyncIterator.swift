@@ -3,7 +3,6 @@
     import Dictionary
     import Dictionary_Ordered
     import Hash_Indexed_Primitive
-    import Hash
     import Deque
     import Column
     import Buffer_Ring_Primitive

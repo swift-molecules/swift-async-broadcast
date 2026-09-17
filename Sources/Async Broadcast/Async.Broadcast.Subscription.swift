@@ -3,7 +3,6 @@
     import Dictionary
     import Dictionary_Ordered
     import Hash_Indexed_Primitive
-    import Hash
     import Column
     import Buffer_Linear_Primitive
     import Storage_Memory
