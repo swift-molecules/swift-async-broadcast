@@ -794,7 +794,7 @@ import Async_Broadcast
 
         @Test
         func
-            ``Async broadcasts deliver repeated buffered values` without an onLoss handler behaves exactly as before, and Loss.Reason equality holds`()
+            `Async broadcasts deliver repeated buffered values without an onLoss handler and Loss.Reason equality holds`()
             async throws
         {
 
