@@ -2,7 +2,9 @@ import Async_Broadcast
 #if canImport(Async_Broadcast)
 
     import Async
-    import Testing
+    import Async_Barrier
+import Async_Channel
+import Testing
 
     @Suite
     struct `Async broadcasts deliver values to their subscribers` {
@@ -93,12 +95,12 @@ import Async_Broadcast
             let started = Async.Barrier(parties: 2)
 
             let receiveTask = Task { () -> Int? in
-                try? await started.arrive()
+                try? try await started.arrive()
                 var iterator = subscription.makeAsyncIterator()
                 return try await iterator.next()
             }
 
-            try? await started.arrive()
+            try? try await started.arrive()
 
             broadcast.send(42)
 
@@ -113,12 +115,12 @@ import Async_Broadcast
             let started = Async.Barrier(parties: 2)
 
             let receiveTask = Task { () -> Int? in
-                try? await started.arrive()
+                try? try await started.arrive()
                 var iterator = subscription.makeAsyncIterator()
                 return try await iterator.next()
             }
 
-            try? await started.arrive()
+            try? try await started.arrive()
 
             broadcast.finish()
 
@@ -133,12 +135,12 @@ import Async_Broadcast
             let started = Async.Barrier(parties: 2)
 
             let receiveTask = Task { () -> Int? in
-                try? await started.arrive()
+                try? try await started.arrive()
                 var iterator = subscription.makeAsyncIterator()
                 return try await iterator.next()
             }
 
-            try? await started.arrive()
+            try? try await started.arrive()
 
             subscription.cancel()
 
@@ -189,12 +191,12 @@ import Async_Broadcast
             let started = Async.Barrier(parties: 2)
 
             let receiveTask = Task {
-                try? await started.arrive()
+                try? try await started.arrive()
                 var iterator = subscription.makeAsyncIterator()
                 return try await iterator.next()
             }
 
-            try? await started.arrive()
+            try? try await started.arrive()
 
             receiveTask.cancel()
 

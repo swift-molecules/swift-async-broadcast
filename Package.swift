@@ -15,6 +15,8 @@ let package = Package(
         .library(name: "Async Broadcast", targets: ["Async Broadcast"]),
     ],
     dependencies: [
+        .package(url: "https://github.com/swift-molecules/swift-async-channel.git", branch: "main"),
+        .package(url: "https://github.com/swift-molecules/swift-async-barrier.git", branch: "main"),
         .package(url: "https://github.com/swift-atoms/swift-async.git", branch: "main"),
         .package(url: "https://github.com/swift-atoms/swift-buffer.git", branch: "main"),
         .package(url: "https://github.com/swift-molecules/swift-buffer-linear.git", branch: "main"),
@@ -61,6 +63,8 @@ let package = Package(
         .testTarget(
             name: "Async Broadcast Tests",
             dependencies: [
+                .product(name: "Async Barrier", package: "swift-async-barrier"),
+                .product(name: "Async Channel", package: "swift-async-channel"),
                 .product(name: "Async", package: "swift-async"),
                 .target(name: "Async Broadcast"),
             ],
