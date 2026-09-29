@@ -5,19 +5,19 @@
     import Hash_Indexed_Primitive
     import Queue
     import Deque
-    import Column
-    import Buffer_Ring_Primitive
-    import Buffer_Linear_Primitive
-    import Storage_Memory
     import Memory
     import Memory_Allocator
+    import Storage
     import Buffer
+    import Buffer_Ring_Primitive
+
+    import Buffer_Linear_Primitive
 
     extension Async.Broadcast {
 
         struct State: ~Copyable {
 
-            var buffer: Deque<Column.Ring<(index: UInt64, element: Element)>> = .init()
+            var buffer: Deque<Buffer::Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<(index: UInt64, element: Element)>>.Ring> = .init()
 
             var next: Next.Index = .init()
 
