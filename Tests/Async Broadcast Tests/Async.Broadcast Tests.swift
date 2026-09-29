@@ -620,7 +620,7 @@ import Async_Broadcast
         }
     }
 
-    @Suite("`Async broadcasts deliver repeated buffered values`")
+    @Suite
     struct `Async broadcasts preserve subscription behavior` {
         @Test
         func `Send trims the replay buffer to bufferLimit behind a stalled subscriber, which observes loss`()
