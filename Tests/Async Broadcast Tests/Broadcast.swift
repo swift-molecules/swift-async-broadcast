@@ -2,18 +2,19 @@ import Async_Broadcast
 import Async
 import Testing
 
-extension Benchmark {
-    @Suite struct `Async broadcasts deliver repeated buffered values` {}
+@Suite(.serialized)
+struct `Async broadcast benchmarks preserve delivery` {
+    static let iterations = 1_000
 }
 
-extension Benchmark.`Async broadcasts deliver repeated buffered values` {
+extension `Async broadcast benchmarks preserve delivery` {
 
-    @Test(.timed(iterations: 10, warmup: 2))
+    @Test
     func `1000 sends to 50 subscribers`() async throws {
-        let broadcast = Async.`Async broadcasts deliver repeated buffered values`<Int>(bufferCapacity: Benchmark.iterations)
+        let broadcast = Async.Broadcast<Int>(bufferCapacity: `Async broadcast benchmarks preserve delivery`.iterations)
         let subscriptions = (0..<50).map { _ in broadcast.subscribe() }
 
-        for i in 0..<Benchmark.iterations {
+        for i in 0..<`Async broadcast benchmarks preserve delivery`.iterations {
             broadcast.send(i)
         }
         broadcast.finish()
@@ -21,16 +22,16 @@ extension Benchmark.`Async broadcasts deliver repeated buffered values` {
         for sub in subscriptions {
             var count = 0
             for try await _ in sub { count += 1 }
-            #expect(count == Benchmark.iterations)
+            #expect(count == `Async broadcast benchmarks preserve delivery`.iterations)
         }
     }
 
-    @Test(.timed(iterations: 10, warmup: 2))
+    @Test
     func `1000 sends to 3 subscribers`() async throws {
-        let broadcast = Async.`Async broadcasts deliver repeated buffered values`<Int>(bufferCapacity: Benchmark.iterations)
+        let broadcast = Async.Broadcast<Int>(bufferCapacity: `Async broadcast benchmarks preserve delivery`.iterations)
         let subscriptions = (0..<3).map { _ in broadcast.subscribe() }
 
-        for i in 0..<Benchmark.iterations {
+        for i in 0..<`Async broadcast benchmarks preserve delivery`.iterations {
             broadcast.send(i)
         }
         broadcast.finish()
@@ -38,39 +39,39 @@ extension Benchmark.`Async broadcasts deliver repeated buffered values` {
         for sub in subscriptions {
             var count = 0
             for try await _ in sub { count += 1 }
-            #expect(count == Benchmark.iterations)
+            #expect(count == `Async broadcast benchmarks preserve delivery`.iterations)
         }
     }
 }
 
-extension Benchmark.`Async broadcasts deliver repeated buffered values` {
+extension `Async broadcast benchmarks preserve delivery` {
 
-    @Test(.timed(iterations: 10, warmup: 2))
+    @Test
     func `Broadcasts preserve 1000 buffered iterations`() async throws {
-        let broadcast = Async.`Async broadcasts deliver repeated buffered values`<Int>(bufferCapacity: Benchmark.iterations)
+        let broadcast = Async.Broadcast<Int>(bufferCapacity: `Async broadcast benchmarks preserve delivery`.iterations)
         let subscription = broadcast.subscribe()
 
-        for i in 0..<Benchmark.iterations {
+        for i in 0..<`Async broadcast benchmarks preserve delivery`.iterations {
             broadcast.send(i)
         }
         broadcast.finish()
 
         var count = 0
         for try await _ in subscription { count += 1 }
-        #expect(count == Benchmark.iterations)
+        #expect(count == `Async broadcast benchmarks preserve delivery`.iterations)
     }
 }
 
-extension Benchmark.`Async broadcasts deliver repeated buffered values` {
+extension `Async broadcast benchmarks preserve delivery` {
 
-    @Test(.timed(iterations: 10, warmup: 2))
+    @Test
     func `1000 round-trips with 10 subscribers`() async throws {
-        let broadcast = Async.`Async broadcasts deliver repeated buffered values`<Int>(bufferCapacity: Benchmark.iterations)
+        let broadcast = Async.Broadcast<Int>(bufferCapacity: `Async broadcast benchmarks preserve delivery`.iterations)
         let subscriptions = (0..<10).map { _ in broadcast.subscribe() }
 
         try await withThrowingTaskGroup(of: Void.self) { group in
             group.addTask {
-                for i in 0..<Benchmark.iterations {
+                for i in 0..<`Async broadcast benchmarks preserve delivery`.iterations {
                     broadcast.send(i)
                 }
                 broadcast.finish()
@@ -80,7 +81,7 @@ extension Benchmark.`Async broadcasts deliver repeated buffered values` {
                 group.addTask {
                     var count = 0
                     for try await _ in sub { count += 1 }
-                    #expect(count == Benchmark.iterations)
+                    #expect(count == `Async broadcast benchmarks preserve delivery`.iterations)
                 }
             }
 
