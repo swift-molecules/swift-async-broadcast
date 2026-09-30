@@ -10,11 +10,11 @@ struct `Async broadcast benchmarks preserve delivery` {
 extension `Async broadcast benchmarks preserve delivery` {
 
     @Test
-    func `200 sends to 50 subscribers`() async throws {
+    func `1000 sends to 50 subscribers`() async throws {
         let broadcast = Async.Broadcast<Int>(bufferCapacity: `Async broadcast benchmarks preserve delivery`.iterations)
         let subscriptions = (0..<50).map { _ in broadcast.subscribe() }
 
-        for i in 0..<200 {
+        for i in 0..<`Async broadcast benchmarks preserve delivery`.iterations {
             broadcast.send(i)
         }
         broadcast.finish()
@@ -22,7 +22,7 @@ extension `Async broadcast benchmarks preserve delivery` {
         for sub in subscriptions {
             var count = 0
             for try await _ in sub { count += 1 }
-            #expect(count == 200)
+            #expect(count == `Async broadcast benchmarks preserve delivery`.iterations)
         }
     }
 

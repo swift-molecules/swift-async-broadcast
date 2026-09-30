@@ -15,6 +15,7 @@
     import Ownership_Shared_Primitive
     import Storage
     import Store
+    import Index
 
     extension Async.Broadcast.Subscription {
 
@@ -51,10 +52,9 @@
 
                                     let cursor = subscriber.cursor
                                     var buffered: Element? = nil
-                                    state.buffer.forEach { entry in
-                                        if buffered == nil, entry.index == cursor {
-                                            buffered = entry.element
-                                        }
+                                    if cursor < state.next.index {
+                                        let first = state.next.index - UInt64(state.buffer.count.underlying.rawValue)
+                                        buffered = state.buffer[Index<(index: UInt64, element: Element)>(_unchecked: Ordinal(UInt(cursor - first)))].element
                                     }
                                     if let element = buffered {
                                         subscriber.cursor += 1

@@ -17,7 +17,7 @@
 
         struct State: ~Copyable {
 
-            var buffer: Deque<Buffer::Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<(index: UInt64, element: Element)>>.Ring> = .init()
+            var buffer: Buffer::Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<(index: UInt64, element: Element)>>.Ring = .init(minimumCapacity: 1)
 
             var next: Next.Index = .init()
 

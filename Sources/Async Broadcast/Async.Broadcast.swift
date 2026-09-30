@@ -52,12 +52,11 @@
                     let index = state.next.index
                     state.next.index += 1
 
-                    state.buffer.push((index, element), to: .back)
+                    state.buffer.push.back((index, element))
 
                     var droppedThroughIndex: UInt64? = nil
                     while state.buffer.count > bufferLimit {
-                        guard let front = state.buffer.take(from: .front) else { break }
-                        droppedThroughIndex = front.index
+                        droppedThroughIndex = state.buffer.pop.front().index
                     }
 
                     var lossEvents: [Loss] = []
@@ -125,12 +124,7 @@
                 var finishIds: [UInt64] = []
                 state.subscribers.forEach { id, subscriber in
                     if subscriber.continuation != nil {
-                        let cursor = subscriber.cursor
-                        var hasBufferedElement = false
-                        state.buffer.forEach { entry in
-                            if entry.index >= cursor { hasBufferedElement = true }
-                        }
-                        if !hasBufferedElement {
+                        if subscriber.cursor >= state.next.index {
                             finishIds.append(id)
                         }
                     }
