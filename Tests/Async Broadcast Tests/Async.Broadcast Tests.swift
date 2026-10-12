@@ -95,12 +95,12 @@ import Testing
             let started = Async.Barrier(parties: 2)
 
             let receiveTask = Task { () -> Int? in
-                try? try await started.arrive()
+                try? await started.arrive()
                 var iterator = subscription.makeAsyncIterator()
                 return try await iterator.next()
             }
 
-            try? try await started.arrive()
+            try? await started.arrive()
 
             broadcast.send(42)
 
@@ -115,12 +115,12 @@ import Testing
             let started = Async.Barrier(parties: 2)
 
             let receiveTask = Task { () -> Int? in
-                try? try await started.arrive()
+                try? await started.arrive()
                 var iterator = subscription.makeAsyncIterator()
                 return try await iterator.next()
             }
 
-            try? try await started.arrive()
+            try? await started.arrive()
 
             broadcast.finish()
 
@@ -135,12 +135,12 @@ import Testing
             let started = Async.Barrier(parties: 2)
 
             let receiveTask = Task { () -> Int? in
-                try? try await started.arrive()
+                try? await started.arrive()
                 var iterator = subscription.makeAsyncIterator()
                 return try await iterator.next()
             }
 
-            try? try await started.arrive()
+            try? await started.arrive()
 
             subscription.cancel()
 
@@ -191,12 +191,12 @@ import Testing
             let started = Async.Barrier(parties: 2)
 
             let receiveTask = Task {
-                try? try await started.arrive()
+                try? await started.arrive()
                 var iterator = subscription.makeAsyncIterator()
                 return try await iterator.next()
             }
 
-            try? try await started.arrive()
+            try? await started.arrive()
 
             receiveTask.cancel()
 

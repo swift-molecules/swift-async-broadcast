@@ -2,7 +2,7 @@
 
     extension Async.Broadcast {
 
-        public enum Error: Swift.Error, Sendable, Equatable {
+        public enum Error: Swift::Error, Sendable, Equatable {
 
             case cancelled
         }
