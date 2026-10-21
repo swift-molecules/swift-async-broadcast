@@ -116,8 +116,7 @@
         }
 
         public func finish() {
-            let continuationsToResume: [CheckedContinuation<Next.Outcome, Never>] = _state.withLock
-            { state in
+            let continuationsToResume: [CheckedContinuation<Next.Outcome, Never>] = _state.withLock { state in
                 state.is = .finished
 
                 var toResume: [CheckedContinuation<Next.Outcome, Never>] = []

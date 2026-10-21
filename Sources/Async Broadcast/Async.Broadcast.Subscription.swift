@@ -37,14 +37,13 @@
     extension Async.Broadcast.Subscription {
 
         public func cancel() {
-            let continuationToCancel:
-                CheckedContinuation<Async.Broadcast<Element>.Next.Outcome, Never>? = broadcast
-                    ._state.withLock { state in
-                        guard let subscriber = state.subscribers.removeValue(forKey: id) else {
-                            return nil
-                        }
-                        return subscriber.continuation
+            let continuationToCancel: CheckedContinuation<Async.Broadcast<Element>.Next.Outcome, Never>? = broadcast
+                ._state.withLock { state in
+                    guard let subscriber = state.subscribers.removeValue(forKey: id) else {
+                        return nil
                     }
+                    return subscriber.continuation
+                }
             continuationToCancel?.resume(returning: .finished)
         }
     }

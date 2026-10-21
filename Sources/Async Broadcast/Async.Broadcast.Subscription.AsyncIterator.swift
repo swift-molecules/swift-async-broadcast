@@ -41,42 +41,41 @@
             let result: Async.Broadcast<Element>.Next.Outcome = await withTaskCancellationHandler {
                 await withCheckedContinuation { continuation in
 
-                    let (immediateResult, installedWait):
-                        (Async.Broadcast<Element>.Next.Outcome?, Async.Broadcast<Element>.Wait?) =
-                            broadcast._state.withLock { state in
-                                let resolved = state.subscribers.withMutableValue(forKey: id) {
-                                    subscriber -> (
-                                        Async.Broadcast<Element>.Next.Outcome?,
-                                        Async.Broadcast<Element>.Wait?
-                                    ) in
+                    let (immediateResult, installedWait): (Async.Broadcast<Element>.Next.Outcome?, Async.Broadcast<Element>.Wait?) =
+                        broadcast._state.withLock { state in
+                            let resolved = state.subscribers.withMutableValue(forKey: id) {
+                                subscriber -> (
+                                    Async.Broadcast<Element>.Next.Outcome?,
+                                    Async.Broadcast<Element>.Wait?
+                                ) in
 
-                                    let cursor = subscriber.cursor
-                                    var buffered: Element? = nil
-                                    if cursor < state.next.index {
-                                        let first = state.next.index - UInt64(state.buffer.count.underlying.rawValue)
-                                        buffered = state.buffer[Index<(index: UInt64, element: Element)>(_unchecked: Ordinal(UInt(cursor - first)))].element
-                                    }
-                                    if let element = buffered {
-                                        subscriber.cursor += 1
-                                        return (.element(element), nil)
-                                    }
-
-                                    if state.is == .finished {
-                                        return (.finished, nil)
-                                    }
-
-                                    precondition(
-                                        subscriber.continuation == nil,
-                                        "Broadcast: concurrent next() calls on same subscription"
-                                    )
-                                    subscriber.wait.token &+= 1
-                                    let token = subscriber.wait.token
-                                    subscriber.continuation = continuation
-                                    return (nil, Async.Broadcast<Element>.Wait(token: token))
+                                let cursor = subscriber.cursor
+                                var buffered: Element? = nil
+                                if cursor < state.next.index {
+                                    let first = state.next.index - UInt64(state.buffer.count.underlying.rawValue)
+                                    buffered = state.buffer[Index<(index: UInt64, element: Element)>(_unchecked: Ordinal(UInt(cursor - first)))].element
+                                }
+                                if let element = buffered {
+                                    subscriber.cursor += 1
+                                    return (.element(element), nil)
                                 }
 
-                                return resolved ?? (.finished, nil)
+                                if state.is == .finished {
+                                    return (.finished, nil)
+                                }
+
+                                precondition(
+                                    subscriber.continuation == nil,
+                                    "Broadcast: concurrent next() calls on same subscription"
+                                )
+                                subscriber.wait.token &+= 1
+                                let token = subscriber.wait.token
+                                subscriber.continuation = continuation
+                                return (nil, Async.Broadcast<Element>.Wait(token: token))
                             }
+
+                            return resolved ?? (.finished, nil)
+                        }
 
                     if let result = immediateResult {
                         continuation.resume(returning: result)

@@ -1,10 +1,11 @@
 import Async_Broadcast
+
 #if canImport(Async_Broadcast)
 
     import Async
     import Async_Barrier
-import Async_Channel
-import Testing
+    import Async_Channel
+    import Testing
 
     @Suite
     struct `Async broadcasts deliver values to their subscribers` {
@@ -468,7 +469,8 @@ import Testing
 
                 group.addTask { [subscriberTasks] in
                     for _ in 0..<10 { await Task.yield() }
-                    for entry in subscriberTasks where
+                    for entry in subscriberTasks
+                    where
                         idsToCancel.contains(entry.id) && entry.id != controlSubscriberID
                     {
                         entry.task.cancel()

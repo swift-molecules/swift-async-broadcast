@@ -1,5 +1,5 @@
-import Async_Broadcast
 import Async
+import Async_Broadcast
 import Testing
 
 @Suite(.serialized)
