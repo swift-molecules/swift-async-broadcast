@@ -14,7 +14,7 @@ extension `Async broadcast benchmarks preserve delivery` {
         let broadcast = Async.Broadcast<Int>(bufferCapacity: `Async broadcast benchmarks preserve delivery`.iterations)
         let subscriptions = (0..<50).map { _ in broadcast.subscribe() }
 
-        for i in 0..<`Async broadcast benchmarks preserve delivery`.iterations {
+        (0..<`Async broadcast benchmarks preserve delivery`.iterations).forEach { i in
             broadcast.send(i)
         }
         broadcast.finish()
@@ -31,7 +31,7 @@ extension `Async broadcast benchmarks preserve delivery` {
         let broadcast = Async.Broadcast<Int>(bufferCapacity: `Async broadcast benchmarks preserve delivery`.iterations)
         let subscriptions = (0..<3).map { _ in broadcast.subscribe() }
 
-        for i in 0..<`Async broadcast benchmarks preserve delivery`.iterations {
+        (0..<`Async broadcast benchmarks preserve delivery`.iterations).forEach { i in
             broadcast.send(i)
         }
         broadcast.finish()
@@ -51,7 +51,7 @@ extension `Async broadcast benchmarks preserve delivery` {
         let broadcast = Async.Broadcast<Int>(bufferCapacity: `Async broadcast benchmarks preserve delivery`.iterations)
         let subscription = broadcast.subscribe()
 
-        for i in 0..<`Async broadcast benchmarks preserve delivery`.iterations {
+        (0..<`Async broadcast benchmarks preserve delivery`.iterations).forEach { i in
             broadcast.send(i)
         }
         broadcast.finish()
