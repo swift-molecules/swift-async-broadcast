@@ -71,7 +71,7 @@ extension `Async broadcast benchmarks preserve delivery` {
 
         try await withThrowingTaskGroup(of: Void.self) { group in
             group.addTask {
-                for i in 0..<`Async broadcast benchmarks preserve delivery`.iterations {
+                (0..<`Async broadcast benchmarks preserve delivery`.iterations).forEach { i in
                     broadcast.send(i)
                 }
                 broadcast.finish()
