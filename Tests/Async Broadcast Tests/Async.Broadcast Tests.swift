@@ -7,9 +7,9 @@ import Async_Broadcast
     import Async_Channel
     import Testing
 
-enum `Async.Broadcast Tests` {}
+    enum `Async.Broadcast Tests` {}
 
-extension `Async.Broadcast Tests` {
+    extension `Async.Broadcast Tests` {
         @Suite
         struct `Async broadcasts deliver values to their subscribers` {
 
@@ -214,9 +214,9 @@ extension `Async.Broadcast Tests` {
                 }
             }
         }
-}
+    }
 
-extension `Async.Broadcast Tests` {
+    extension `Async.Broadcast Tests` {
         @Suite
         struct `Async broadcasts preserve delivery under concurrent load` {
 
@@ -628,9 +628,9 @@ extension `Async.Broadcast Tests` {
                 #expect(received == Array(0..<10))
             }
         }
-}
+    }
 
-extension `Async.Broadcast Tests` {
+    extension `Async.Broadcast Tests` {
         @Suite
         struct `Async broadcasts preserve subscription behavior` {
             @Test
@@ -827,7 +827,7 @@ extension `Async.Broadcast Tests` {
                 #expect(Async.Broadcast<Int>.Loss.Reason.capacityLimit == .capacityLimit)
             }
         }
-}
+    }
 
     private final class LossRecorder: @unchecked Sendable {
         private(set) var events: [Async.Broadcast<Int>.Loss] = []
